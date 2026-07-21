@@ -1,6 +1,7 @@
 package com.talhayun.adkan.ui.groups
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,11 +14,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import com.talhayun.adkan.ui.home.formatMinutesHebrew
 import com.talhayun.adkan.ui.shared.LeagueBadge
 import com.talhayun.adkan.ui.shared.RankedMemberRow
@@ -72,84 +78,94 @@ private val sampleOtherGroups = listOf(
 @Composable
 fun GroupsScreen() {
     var selectedRange by remember { mutableStateOf(GroupsRange.TODAY) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(AdKanSpacing.screenPadding),
-        verticalArrangement = Arrangement.spacedBy(AdKanSpacing.cardSpacing),
-    ) {
-        Text(text = "קבוצות", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .padding(AdKanSpacing.screenPadding),
+            verticalArrangement = Arrangement.spacedBy(AdKanSpacing.cardSpacing),
+        ) {
+            Text(text = "קבוצות", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "⭐ ", fontSize = 16.sp)
-            Text(text = "החברי'ה", style = CardTitle)
-        }
-
-        PodiumView(
-            entries = sampleGroupMembers.take(3).map {
-                PodiumEntry(
-                    id = it.id,
-                    displayName = it.name,
-                    avatarEmoji = it.emoji,
-                    minutes = it.minutes,
-                    streak = it.streak,
-                    leagueBadge = it.badge,
-                    rank = it.rank,
-                    isCurrentUser = it.isCurrentUser,
-                )
-            },
-        )
-
-        RangeToggle(selected = selectedRange, onSelect = { selectedRange = it })
-
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            sampleGroupMembers.forEach { member ->
-                RankedMemberRow(
-                    rank = member.rank,
-                    avatarEmoji = member.emoji,
-                    displayName = member.name,
-                    formattedMinutes = formatMinutesHebrew(member.minutes),
-                    hasMinutesData = member.minutes > 0,
-                    minutesColor = minutesColor(member.minutes, sampleGroupGoal),
-                    streak = member.streak,
-                    badge = member.badge,
-                    isCurrentUser = member.isCurrentUser,
-                    wins = member.wins,
-                )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "⭐ ", fontSize = 16.sp)
+                Text(text = "החברי'ה", style = CardTitle)
             }
-        }
 
-        Text(text = "כל הקבוצות", style = CardTitle)
-
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            sampleOtherGroups.forEach { group ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "${group.emoji} ", fontSize = 18.sp)
-                        Text(text = group.name, fontWeight = FontWeight.SemiBold)
-                    }
-                    Text(
-                        text = "${group.memberCount} חברים",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+            PodiumView(
+                entries = sampleGroupMembers.take(3).map {
+                    PodiumEntry(
+                        id = it.id,
+                        displayName = it.name,
+                        avatarEmoji = it.emoji,
+                        minutes = it.minutes,
+                        streak = it.streak,
+                        leagueBadge = it.badge,
+                        rank = it.rank,
+                        isCurrentUser = it.isCurrentUser,
                     )
+                },
+            )
+
+            RangeToggle(
+                selected = selectedRange,
+                onSelect = { tapped ->
+                    val upsell = tapped.upsellMessage()
+                    if (upsell != null) {
+                        scope.launch { snackbarHostState.showSnackbar(upsell) }
+                    } else {
+                        selectedRange = tapped
+                    }
+                },
+            )
+
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                sampleGroupMembers.forEach { member ->
+                    RankedMemberRow(
+                        rank = member.rank,
+                        avatarEmoji = member.emoji,
+                        displayName = member.name,
+                        formattedMinutes = formatMinutesHebrew(member.minutes),
+                        hasMinutesData = member.minutes > 0,
+                        minutesColor = minutesColor(member.minutes, sampleGroupGoal),
+                        streak = member.streak,
+                        badge = member.badge,
+                        isCurrentUser = member.isCurrentUser,
+                        wins = member.wins,
+                    )
+                }
+            }
+
+            Text(text = "כל הקבוצות", style = CardTitle)
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                sampleOtherGroups.forEach { group ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "${group.emoji} ", fontSize = 18.sp)
+                            Text(text = group.name, fontWeight = FontWeight.SemiBold)
+                        }
+                        Text(
+                            text = "${group.memberCount} חברים",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
         }
     }
-}
-
-private enum class GroupsRange(val label: String, val locked: Boolean) {
-    WEEK("השבוע", locked = true),
-    TODAY("היום", locked = false),
 }
 
 @Composable
@@ -166,6 +182,7 @@ private fun RangeToggle(selected: GroupsRange, onSelect: (GroupsRange) -> Unit) 
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
+                    .clickable { onSelect(range) }
                     .background(if (isSelected) MaterialTheme.colorScheme.surface else androidx.compose.ui.graphics.Color.Transparent)
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,

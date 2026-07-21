@@ -77,4 +77,7 @@ dependencies {
     // long-term direction is DataStore + raw Tink) but still shipped/functional;
     // see plan doc for the explicit trade-off note.
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // Test-only — plain JUnit4, no Robolectric/instrumented tests (see plan's Global Constraints).
+    testImplementation("junit:junit:4.13.2")
 }
