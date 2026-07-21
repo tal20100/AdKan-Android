@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -31,7 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
 import com.talhayun.adkan.ui.home.formatMinutesHebrew
 import com.talhayun.adkan.ui.shared.LeagueBadge
 import com.talhayun.adkan.ui.shared.RankedMemberRow
@@ -39,6 +38,7 @@ import com.talhayun.adkan.ui.theme.AdKanSpacing
 import com.talhayun.adkan.ui.theme.BrandGreen
 import com.talhayun.adkan.ui.theme.CardTitle
 import com.talhayun.adkan.ui.theme.minutesColor
+import kotlinx.coroutines.launch
 
 // [SKILL-DECL] Ported from iOS App/Visualization/GroupsListView.swift +
 // LeaderboardView.swift structure per plan/serialized-tinkering-pony-agent-
