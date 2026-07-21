@@ -10,3 +10,4 @@ build/
 local.properties
 *.hprof
 .kotlin/
+.worktrees/
