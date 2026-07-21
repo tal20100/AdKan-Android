@@ -38,22 +38,6 @@ import com.talhayun.adkan.ui.theme.AdKanTheme
 // launch (not persisted) since there's no DataStore/Supabase wiring yet.
 private enum class RootScreen { ONBOARDING, MAIN }
 
-// [SKILL-DECL] Ported from iOS App/RootView.swift's MainTabView — same 5 tabs,
-// same order, same Hebrew labels pulled directly from App/Localizable.xcstrings
-// (tab.home/tab.friends/tab.leaderboard/tab.blocking/tab.settings). iOS uses SF
-// Symbols (house.fill, person.2.fill, trophy.fill, shield.checkered,
-// gearshape.fill) for tab icons; Android's core Material icon set doesn't
-// include people/trophy/shield equivalents without the material-icons-extended
-// dependency, so emoji are used instead — consistent with this codebase's
-// existing emoji-icon style already used throughout HomeScreen.kt (🎯, 🏆, 🔥).
-private enum class MainTab(val label: String, val emoji: String) {
-    HOME("בית", "🏠"),
-    FRIENDS("חברים", "👥"),
-    GROUPS("קבוצות", "🏆"),
-    BLOCKING("פוקוס", "🛡️"),
-    SETTINGS("הגדרות", "⚙️"),
-}
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +92,7 @@ private fun AppRoot(authService: AuthService) {
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 when (tab) {
-                    MainTab.HOME -> HomeScreen()
+                    MainTab.HOME -> HomeScreen(onFocusClick = { tab = MainTab.BLOCKING })
                     MainTab.FRIENDS -> FriendsScreen()
                     MainTab.GROUPS -> GroupsScreen()
                     MainTab.BLOCKING -> BlockingScreen()

@@ -63,7 +63,7 @@ private const val sampleStreak = 6
 private const val samplePercentile = 41
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onFocusClick: () -> Unit) {
     val context = LocalContext.current
     val hasRealData = remember { UsageAccessPermission.isGranted(context) }
     val todayMinutes = remember(hasRealData) {
@@ -89,7 +89,7 @@ fun HomeScreen() {
         )
         UsageHeroCard(todayMinutes = todayMinutes, yesterdayMinutes = yesterdayMinutes, goalMinutes = goalMinutes)
         PercentileCard(todayMinutes = todayMinutes)
-        FocusButton()
+        FocusButton(onClick = onFocusClick)
         StreakCard()
         DailyGoalCard(todayMinutes = todayMinutes, goalMinutes = goalMinutes)
     }
@@ -221,9 +221,9 @@ private fun PercentileCard(todayMinutes: Int) {
 
 /** Full-width green CTA mirroring the screenshot's "הפעל פוקוס" button — no-op, sample UI only. */
 @Composable
-private fun FocusButton() {
+private fun FocusButton(onClick: () -> Unit) {
     Button(
-        onClick = { /* no-op — Focus tab isn't wired to real functionality yet */ },
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp),
