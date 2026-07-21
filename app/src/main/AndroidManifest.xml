@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- [SKILL-DECL] plan/serialized-tinkering-pony-agent-a78532b0c00bea6c9.md +
+         developer.android.com UsageStatsManager/AppOpsManager docs: this is a
+         protected permission with no runtime dialog, granted only via
+         Settings.ACTION_USAGE_ACCESS_SETTINGS. -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- [SKILL-DECL] developer.android.com package-visibility docs: Android 11+
+         (API 30+) hides other apps from queryIntentActivities unless declared
+         here — without this, InstalledApps.kt's launcher-app query silently
+         returns an empty/truncated list on real devices, even though it works
+         fine on lower API levels or emulators without visibility filtering. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@android:drawable/sym_def_app_icon"
+        android:label="AdKan"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AdKan">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AdKan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
