@@ -44,6 +44,8 @@ import com.talhayun.adkan.R
 import com.talhayun.adkan.backend.AuthService
 import com.talhayun.adkan.backend.GoogleIdTokenProvider
 import com.talhayun.adkan.backend.SupabaseConfig
+import com.talhayun.adkan.onboarding.Profile
+import com.talhayun.adkan.onboarding.ProfilePrefs
 import com.talhayun.adkan.permissions.UsageAccessPermission
 import com.talhayun.adkan.ui.theme.AdKanSpacing
 import com.talhayun.adkan.ui.theme.BrandGreen
@@ -405,6 +407,7 @@ private val curatedEmojis = listOf(
 
 @Composable
 private fun ProfileSetupStep(onComplete: () -> Unit) {
+    val context = LocalContext.current
     var displayName by remember { mutableStateOf("") }
     var selectedEmoji by remember { mutableStateOf(curatedEmojis.first()) }
 
@@ -488,7 +491,10 @@ private fun ProfileSetupStep(onComplete: () -> Unit) {
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = onComplete,
+            onClick = {
+                ProfilePrefs.save(context, Profile(displayName = displayName, avatarEmoji = selectedEmoji))
+                onComplete()
+            },
             enabled = isValid,
             modifier = Modifier.fillMaxWidth(),
         ) {

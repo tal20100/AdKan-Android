@@ -55,6 +55,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.talhayun.adkan.backend.AuthService
 import com.talhayun.adkan.backend.GoogleIdTokenProvider
 import com.talhayun.adkan.backend.SupabaseConfig
+import com.talhayun.adkan.onboarding.ProfilePrefs
 import com.talhayun.adkan.permissions.UsageAccessPermission
 import com.talhayun.adkan.ui.home.formatMinutesHebrew
 import com.talhayun.adkan.ui.theme.AdKanSpacing
@@ -100,8 +101,8 @@ fun SettingsScreen(authService: AuthService, onBack: () -> Unit = {}) {
     val scope = rememberCoroutineScope()
 
     var isSignedIn by remember { mutableStateOf(authService.isAuthenticated) }
-    var displayName by remember { mutableStateOf("") }
-    var avatarEmoji by remember { mutableStateOf("😎") }
+    var displayName by remember { mutableStateOf(ProfilePrefs.load(context).displayName) }
+    var avatarEmoji by remember { mutableStateOf(ProfilePrefs.load(context).avatarEmoji) }
     var language by remember { mutableStateOf(AppLanguage.HEBREW) }
     var appearance by remember { mutableStateOf(AppearanceMode.SYSTEM) }
     var goalMinutes by remember { mutableStateOf(30) }
