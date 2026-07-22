@@ -25,7 +25,11 @@ class AppBlockAccessibilityService : AccessibilityService() {
     private val tracker = ForegroundBlockTracker()
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (event?.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
+        // Deliberately `event == null ||` rather than `event?.eventType != ...` —
+        // Kotlin does not smart-cast `event` to non-null through a safe-call
+        // comparison like `event?.x != y`, only through a direct null check.
+        // Without this, `event.packageName` below would not compile.
+        if (event == null || event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
         val packageName = event.packageName?.toString() ?: return
         if (packageName == applicationContext.packageName) return
 
