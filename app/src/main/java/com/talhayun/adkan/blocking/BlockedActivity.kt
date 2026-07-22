@@ -4,10 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -52,7 +53,7 @@ class BlockedActivity : ComponentActivity() {
                         ) {
                             Text(text = "🛡️", fontSize = 56.sp)
 
-                            androidx.compose.foundation.layout.Spacer(Modifier.padding(top = 16.dp))
+                            Spacer(Modifier.height(16.dp))
 
                             Text(
                                 text = "עד כאן",
@@ -62,7 +63,7 @@ class BlockedActivity : ComponentActivity() {
                                 textAlign = TextAlign.Center,
                             )
 
-                            androidx.compose.foundation.layout.Spacer(Modifier.padding(top = 12.dp))
+                            Spacer(Modifier.height(12.dp))
 
                             Text(
                                 text = if (appLabel.isNotBlank()) {
@@ -75,7 +76,7 @@ class BlockedActivity : ComponentActivity() {
                                 textAlign = TextAlign.Center,
                             )
 
-                            androidx.compose.foundation.layout.Spacer(Modifier.padding(top = 32.dp))
+                            Spacer(Modifier.height(32.dp))
 
                             Button(
                                 onClick = { goHome() },
