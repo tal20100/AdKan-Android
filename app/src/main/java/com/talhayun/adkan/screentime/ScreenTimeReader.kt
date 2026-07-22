@@ -30,6 +30,17 @@ object ScreenTimeReader {
         return aggregateMinutes(context, start, end)
     }
 
+    /** Today's cumulative foreground minutes for one specific package — 0 if it has no usage today. */
+    fun todayMinutesForPackage(context: Context, packageName: String): Int {
+        val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
+            ?: return 0
+        val start = startOfDay(daysAgo = 0)
+        val end = System.currentTimeMillis()
+        val stats = usageStatsManager.queryAndAggregateUsageStats(start, end)
+        val millis = stats[packageName]?.totalTimeInForeground ?: 0L
+        return (millis / 60_000L).toInt()
+    }
+
     private fun aggregateMinutes(context: Context, start: Long, end: Long): Int {
         val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
             ?: return 0
