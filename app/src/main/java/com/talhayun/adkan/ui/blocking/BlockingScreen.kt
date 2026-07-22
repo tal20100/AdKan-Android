@@ -1,5 +1,7 @@
 package com.talhayun.adkan.ui.blocking
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.talhayun.adkan.permissions.AccessibilityServicePermission
 import com.talhayun.adkan.ui.theme.AdKanSpacing
 import com.talhayun.adkan.ui.theme.BrandGreen
 import com.talhayun.adkan.ui.theme.BrandGreenLight
@@ -53,6 +56,12 @@ private val greenHeroGradient = Brush.verticalGradient(listOf(BrandGreen, BrandG
 @Composable
 fun BlockingScreen() {
     val context = LocalContext.current
+    var isAccessibilityEnabled by remember { mutableStateOf(AccessibilityServicePermission.isEnabled(context)) }
+    val accessibilitySettingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
+        isAccessibilityEnabled = AccessibilityServicePermission.isEnabled(context)
+    }
     var blockingEnabled by remember { mutableStateOf(BlockingPrefs.isBlockingEnabled(context)) }
     var alwaysBlockEnabled by remember { mutableStateOf(BlockingPrefs.isAlwaysBlockEnabled(context)) }
     var selectedApps by remember { mutableStateOf(BlockingPrefs.selectedApps(context)) }
@@ -68,6 +77,11 @@ fun BlockingScreen() {
         Text(text = "חסימת אפליקציות", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
 
         HeroCard()
+
+        AccessibilityStatusRow(
+            isEnabled = isAccessibilityEnabled,
+            onEnableClick = { accessibilitySettingsLauncher.launch(AccessibilityServicePermission.settingsIntent()) },
+        )
 
         FocusTimerRow()
 
@@ -168,6 +182,28 @@ private fun FocusTimerRow() {
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AccessibilityStatusRow(isEnabled: Boolean, onEnableClick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = if (isEnabled) "✅ " else "⚠️ ", fontSize = 16.sp)
+            Text(
+                text = if (isEnabled) "החסימה פעילה במכשיר" else "החסימה דורשת הפעלת שירות נגישות",
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+        if (!isEnabled) {
+            androidx.compose.material3.TextButton(onClick = onEnableClick) {
+                Text(text = "הפעלה")
             }
         }
     }
