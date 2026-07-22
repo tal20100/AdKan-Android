@@ -58,6 +58,12 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.material3:material3")
+    // Real vector icons for the bottom tab bar (Home/Friends/Groups/Blocking/
+    // Settings) — replaces emoji-as-navigation-icons, a real anti-pattern per
+    // the ui-ux-pro-max audit (emoji are font-dependent, not tintable to
+    // match selected/unselected nav states, and don't scale like SVG/vector
+    // assets). Version managed by the compose-bom already declared above.
+    implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")

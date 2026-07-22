@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -21,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.sp
 import com.talhayun.adkan.backend.AuthService
 import com.talhayun.adkan.backend.BackendServices
 import com.talhayun.adkan.ui.blocking.BlockingScreen
@@ -83,7 +83,7 @@ private fun AppRoot(authService: AuthService) {
                         NavigationBarItem(
                             selected = tab == entry,
                             onClick = { tab = entry },
-                            icon = { Text(text = entry.emoji, fontSize = 20.sp) },
+                            icon = { Icon(imageVector = entry.icon, contentDescription = entry.label) },
                             label = { Text(text = entry.label) },
                         )
                     }

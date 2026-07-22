@@ -14,10 +14,14 @@ class MainTabTest {
     }
 
     @Test
-    fun `each tab has a non-blank Hebrew label and emoji`() {
+    fun `each tab has a non-blank Hebrew label and a distinct icon`() {
         MainTab.entries.forEach { tab ->
             assert(tab.label.isNotBlank()) { "${tab.name} has a blank label" }
-            assert(tab.emoji.isNotBlank()) { "${tab.name} has a blank emoji" }
         }
+        assertEquals(
+            "each tab must have a distinct icon (no accidental duplicate assignment)",
+            MainTab.entries.size,
+            MainTab.entries.map { it.icon }.distinct().size,
+        )
     }
 }
