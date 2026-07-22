@@ -47,5 +47,18 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AdKan" />
+
+        <service
+            android:name=".blocking.AppBlockAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true"
+            android:label="עד כאן">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
     </application>
 </manifest>
