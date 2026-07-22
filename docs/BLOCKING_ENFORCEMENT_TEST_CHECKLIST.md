@@ -1,8 +1,9 @@
 # Testing real app-blocking enforcement on a real device
 
-This cannot be verified without your phone — no emulator or compiler was
-available while building this. Please run through this checklist and report
-back what actually happens at each step.
+This code compiles cleanly (verified with real `./gradlew` builds), but its
+actual runtime behavior cannot be verified without your phone — no emulator
+or device was available while building this. Please run through this
+checklist and report back what actually happens at each step.
 
 ## Setup
 1. Install the app fresh (or reinstall, so the Accessibility Service starts unregistered).
