@@ -11,9 +11,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -29,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.talhayun.adkan.ui.home.formatMinutesHebrew
@@ -125,8 +131,13 @@ fun GroupsScreen() {
                 },
             )
 
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                sampleGroupMembers.forEach { member ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(MaterialTheme.colorScheme.surface),
+            ) {
+                sampleGroupMembers.forEachIndexed { index, member ->
                     RankedMemberRow(
                         rank = member.rank,
                         avatarEmoji = member.emoji,
@@ -138,18 +149,31 @@ fun GroupsScreen() {
                         badge = member.badge,
                         isCurrentUser = member.isCurrentUser,
                         wins = member.wins,
+                        flat = true,
                     )
+                    if (index < sampleGroupMembers.lastIndex) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(start = 54.dp, end = 12.dp),
+                            thickness = Dp.Hairline,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                        )
+                    }
                 }
             }
 
             Text(text = "כל הקבוצות", style = CardTitle)
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                sampleOtherGroups.forEach { group ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(MaterialTheme.colorScheme.surface),
+            ) {
+                sampleOtherGroups.forEachIndexed { index, group ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 10.dp),
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -157,10 +181,25 @@ fun GroupsScreen() {
                             Text(text = "${group.emoji} ", fontSize = 18.sp)
                             Text(text = group.name, fontWeight = FontWeight.SemiBold)
                         }
-                        Text(
-                            text = "${group.memberCount} חברים",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "${group.memberCount} חברים",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                    if (index < sampleOtherGroups.lastIndex) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            thickness = Dp.Hairline,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
                         )
                     }
                 }
