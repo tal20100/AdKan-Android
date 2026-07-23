@@ -1,16 +1,22 @@
 package com.talhayun.adkan.ui.social
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.talhayun.adkan.ui.home.formatMinutesHebrew
 import com.talhayun.adkan.ui.shared.LeagueBadge
@@ -56,27 +62,42 @@ fun FriendsScreen() {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(AdKanSpacing.screenPadding),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
             text = "חברים",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp),
         )
 
-        sampleFriends.forEach { friend ->
-            RankedMemberRow(
-                rank = friend.rank,
-                avatarEmoji = friend.emoji,
-                displayName = friend.name,
-                formattedMinutes = formatMinutesHebrew(friend.minutes),
-                hasMinutesData = friend.minutes > 0,
-                minutesColor = minutesColor(friend.minutes, sampleGoal),
-                streak = friend.streak,
-                badge = friend.badge,
-                isCurrentUser = friend.isCurrentUser,
-            )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(20.dp))
+                .background(MaterialTheme.colorScheme.surface),
+        ) {
+            sampleFriends.forEachIndexed { index, friend ->
+                RankedMemberRow(
+                    rank = friend.rank,
+                    avatarEmoji = friend.emoji,
+                    displayName = friend.name,
+                    formattedMinutes = formatMinutesHebrew(friend.minutes),
+                    hasMinutesData = friend.minutes > 0,
+                    minutesColor = minutesColor(friend.minutes, sampleGoal),
+                    streak = friend.streak,
+                    badge = friend.badge,
+                    isCurrentUser = friend.isCurrentUser,
+                    flat = true,
+                )
+                if (index < sampleFriends.lastIndex) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(start = 54.dp, end = 12.dp),
+                        thickness = Dp.Hairline,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    )
+                }
+            }
         }
     }
 }

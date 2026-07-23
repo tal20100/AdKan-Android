@@ -48,6 +48,7 @@ fun RankedMemberRow(
     streak: Int,
     badge: LeagueBadge,
     isCurrentUser: Boolean,
+    flat: Boolean = false,
     modifier: Modifier = Modifier,
     wins: Int = 0,
     staleLabel: String? = null,
@@ -56,9 +57,13 @@ fun RankedMemberRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
+            .let { if (flat) it else it.clip(RoundedCornerShape(14.dp)) }
             .background(
-                if (isCurrentUser) BrandGreen.copy(alpha = 0.08f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                when {
+                    isCurrentUser -> BrandGreen.copy(alpha = 0.08f)
+                    flat -> Color.Transparent
+                    else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+                },
             )
             .padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,

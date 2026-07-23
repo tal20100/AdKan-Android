@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.talhayun.adkan.permissions.UsageAccessPermission
@@ -123,6 +124,8 @@ private fun UsageHeroCard(todayMinutes: Int, yesterdayMinutes: Int, goalMinutes:
                 text = formatMinutesHebrew(todayMinutes),
                 style = HeroNumber,
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Clip,
             )
 
             Spacer(Modifier.height(4.dp))
@@ -228,7 +231,7 @@ private fun FocusButton(onClick: () -> Unit) {
             .fillMaxWidth()
             .height(52.dp),
         colors = ButtonDefaults.buttonColors(containerColor = BrandGreen),
-        shape = RoundedCornerShape(50),
+        shape = RoundedCornerShape(16.dp),
     ) {
         Text(text = "הפעל פוקוס", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
     }
@@ -330,7 +333,8 @@ private fun PlainCard(content: @Composable ColumnScope.() -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(AdKanSpacing.cardCornerRadius),
-        colors = CardDefaults.cardColors(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Column(
             modifier = Modifier.padding(AdKanSpacing.cardPadding),

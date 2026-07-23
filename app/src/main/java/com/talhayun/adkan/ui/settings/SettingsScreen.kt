@@ -59,6 +59,7 @@ import com.talhayun.adkan.onboarding.ProfilePrefs
 import com.talhayun.adkan.permissions.UsageAccessPermission
 import com.talhayun.adkan.ui.home.formatMinutesHebrew
 import com.talhayun.adkan.ui.theme.AdKanSpacing
+import com.talhayun.adkan.ui.theme.AppearanceMode
 import com.talhayun.adkan.ui.theme.BrandGreen
 import com.talhayun.adkan.ui.theme.BrandPurple
 import com.talhayun.adkan.ui.theme.CardTitle
@@ -84,19 +85,18 @@ import kotlinx.coroutines.launch
 
 private val dailyGoalOptions = listOf(30, 45, 60, 90, 120, 150, 180, 240, 300)
 
-private enum class AppearanceMode(val label: String) {
-    LIGHT("בהיר"),
-    DARK("כהה"),
-    SYSTEM("מערכת"),
-}
-
 private enum class AppLanguage(val label: String) {
     HEBREW("עברית"),
     ENGLISH("English"),
 }
 
 @Composable
-fun SettingsScreen(authService: AuthService, onBack: () -> Unit = {}) {
+fun SettingsScreen(
+    authService: AuthService,
+    appearanceMode: AppearanceMode,
+    onAppearanceModeChange: (AppearanceMode) -> Unit,
+    onBack: () -> Unit = {},
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -104,7 +104,6 @@ fun SettingsScreen(authService: AuthService, onBack: () -> Unit = {}) {
     var displayName by remember { mutableStateOf(ProfilePrefs.load(context).displayName) }
     var avatarEmoji by remember { mutableStateOf(ProfilePrefs.load(context).avatarEmoji) }
     var language by remember { mutableStateOf(AppLanguage.HEBREW) }
-    var appearance by remember { mutableStateOf(AppearanceMode.SYSTEM) }
     var goalMinutes by remember { mutableStateOf(30) }
     var screenTimeAuthorized by remember { mutableStateOf(UsageAccessPermission.isGranted(context)) }
     var eveningReminder by remember { mutableStateOf(true) }
@@ -247,13 +246,13 @@ fun SettingsScreen(authService: AuthService, onBack: () -> Unit = {}) {
             SettingsValueRow(
                 icon = "🎨",
                 title = "מראה",
-                value = appearance.label,
+                value = appearanceMode.label,
                 expanded = appearanceMenuExpanded,
                 onClick = { appearanceMenuExpanded = true },
                 menuContent = {
                     AppearanceMode.entries.forEach { option ->
                         DropdownOption(text = option.label) {
-                            appearance = option
+                            onAppearanceModeChange(option)
                             appearanceMenuExpanded = false
                         }
                     }
