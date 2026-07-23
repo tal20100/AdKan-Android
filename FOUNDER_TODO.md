@@ -5,15 +5,21 @@ paid signups). Everything else is being handled in the code directly.
 
 ## 1. Supabase credentials (blocks sign-in / any backend call)
 
-Open `local.properties` in the project root yourself (never paste secrets into
-chat) and add:
+**This is a copy-paste, not new setup** — same Supabase project as iOS.
 
-```
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-```
+1. Open `C:\Users\Tal\OneDrive\Documents\Studying\code\git-repos\AdKan\config\SupabaseSecrets.plist`
+   (the iOS app's real values live here).
+2. Open `C:\dev\AdKan-Android\local.properties`.
+3. Copy the URL and anon key from the plist into the properties file as:
+   ```
+   SUPABASE_URL=<paste from the plist>
+   SUPABASE_ANON_KEY=<paste from the plist>
+   ```
 
-Same values the iOS app already uses — one shared backend, nothing new to create.
+Claude deliberately won't read or copy this value itself, even via a script —
+`CLAUDE.md`'s own rule treats any `eyJ*`-format key (which the Supabase anon
+key is) as radioactive, no exceptions. This is the one step that's quicker for
+you to do by hand than to explain how to automate safely.
 
 **Status: you've filled this in** (confirmed present, values not inspected/logged).
 
