@@ -74,7 +74,7 @@ fun BlockingScreen() {
             .padding(AdKanSpacing.screenPadding),
         verticalArrangement = Arrangement.spacedBy(AdKanSpacing.cardSpacing),
     ) {
-        Text(text = "חסימת אפליקציות", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(text = "חסימת אפליקציות", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
 
         HeroCard()
 

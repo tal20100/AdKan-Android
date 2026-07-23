@@ -27,6 +27,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -48,6 +49,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -62,7 +64,6 @@ import com.talhayun.adkan.ui.theme.AdKanSpacing
 import com.talhayun.adkan.ui.theme.AppearanceMode
 import com.talhayun.adkan.ui.theme.BrandGreen
 import com.talhayun.adkan.ui.theme.BrandPurple
-import com.talhayun.adkan.ui.theme.CardTitle
 import com.talhayun.adkan.ui.theme.SuccessGreen
 import com.talhayun.adkan.ui.theme.WarningOrange
 import kotlinx.coroutines.launch
@@ -174,7 +175,7 @@ fun SettingsScreen(
             }
         }
 
-        Text(text = "הגדרות", style = CardTitle, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text(text = "הגדרות", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
 
         if (!isSignedIn) {
             SettingsCard {
@@ -509,7 +510,11 @@ private fun SettingsSectionHeader(text: String) {
 
 @Composable
 private fun SettingsDivider() {
-    Spacer(Modifier.height(12.dp))
+    HorizontalDivider(
+        modifier = Modifier.padding(vertical = 10.dp),
+        thickness = Dp.Hairline,
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+    )
 }
 
 @Composable

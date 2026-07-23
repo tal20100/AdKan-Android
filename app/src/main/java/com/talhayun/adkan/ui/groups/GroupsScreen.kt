@@ -97,7 +97,7 @@ fun GroupsScreen() {
                 .padding(AdKanSpacing.screenPadding),
             verticalArrangement = Arrangement.spacedBy(AdKanSpacing.cardSpacing),
         ) {
-            Text(text = "קבוצות", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(text = "קבוצות", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "⭐ ", fontSize = 16.sp)
