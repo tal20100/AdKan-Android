@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import com.talhayun.adkan.permissions.AccessibilityServicePermission
 import com.talhayun.adkan.ui.theme.AdKanSpacing
 import com.talhayun.adkan.ui.theme.BrandGreen
-import com.talhayun.adkan.ui.theme.BrandGreenLight
 import com.talhayun.adkan.ui.theme.BrandPurple
 import com.talhayun.adkan.ui.theme.WarningOrange
 
@@ -51,7 +51,7 @@ import com.talhayun.adkan.ui.theme.WarningOrange
 // FamilyControls-equivalent enforcement wired up (that needs an accessibility
 // service or usage-stats polling loop, out of scope for this pass).
 
-private val greenHeroGradient = Brush.verticalGradient(listOf(BrandGreen, BrandGreenLight))
+private val greenHeroGradient = Brush.verticalGradient(listOf(Color(0xFF5FB85A), BrandGreen))
 
 @Composable
 fun BlockingScreen() {

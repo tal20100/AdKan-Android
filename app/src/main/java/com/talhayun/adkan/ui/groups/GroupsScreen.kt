@@ -223,7 +223,7 @@ private fun RangeToggle(selected: GroupsRange, onSelect: (GroupsRange) -> Unit) 
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
                     .clickable { onSelect(range) }
-                    .background(if (isSelected) MaterialTheme.colorScheme.surface else androidx.compose.ui.graphics.Color.Transparent)
+                    .background(if (isSelected) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.14f) else androidx.compose.ui.graphics.Color.Transparent)
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
