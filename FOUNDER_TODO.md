@@ -1,7 +1,7 @@
 # AdKan Android — what's left for you to do
 
-Things Claude can't do for you (secrets, external consoles, admin-only OS actions).
-Everything else is being handled in the code directly.
+Things Claude can't do for you (secrets, external consoles, admin-only OS actions,
+paid signups). Everything else is being handled in the code directly.
 
 ## 1. Supabase credentials (blocks sign-in / any backend call)
 
@@ -14,6 +14,8 @@ SUPABASE_ANON_KEY=your-anon-key
 ```
 
 Same values the iOS app already uses — one shared backend, nothing new to create.
+
+**Status: you've filled this in** (confirmed present, values not inspected/logged).
 
 ## 2. Google Sign-In setup (blocks real sign-in, currently safely stubbed)
 
@@ -31,7 +33,31 @@ Same values the iOS app already uses — one shared backend, nothing new to crea
 Until this is done, sign-in safely no-ops via a stub — it won't crash, it just
 won't do anything real yet.
 
-## 3. One-time environment fixes already applied (informational, no action needed)
+**Status: unconfirmed whether you've done the Cloud Console + Supabase provider
+steps** — `local.properties` has a `GOOGLE_WEB_CLIENT_ID` entry but that alone
+doesn't mean the Cloud Console OAuth clients and Supabase provider toggle are
+actually set up. Test by tapping "התחברות עם Google" during onboarding.
+
+## 3. Google Play Store — publishing (not free, but cheap)
+
+- **One-time $25 USD registration fee** at
+  [play.google.com/console/signup](https://play.google.com/console/signup) —
+  no annual renewal (unlike Apple's $99/year). 2026 requires stronger identity
+  verification (2-step verification, matching ID/payment/profile details).
+- **Real gate you cannot skip**: since Nov 2023, new *personal* developer
+  accounts must run a **closed test with 12 distinct testers, opted in
+  continuously for 14 days**, before Google allows publishing to production at
+  all. Real people on real devices — emulators and duplicate accounts don't
+  count. The 14-day clock starts once all 12 have opted in, so line people up
+  early (friends/family/beta testers).
+- Test track order: **Internal testing** (up to 100 testers, instant, no
+  review wait — start here) → **Closed testing** (this is where the 12/14-day
+  requirement applies) → **Open testing** (public beta) → production.
+- If your Play Console account is an **organization** account (not personal),
+  or was created before Nov 13 2023, the 12-tester rule doesn't apply — but a
+  fresh signup today will be personal by default.
+
+## 4. One-time environment fixes already applied (informational, no action needed)
 
 - Project moved from the OneDrive-synced path to `C:\dev\AdKan-Android` —
   update any shortcuts/scripts that still point at the old
@@ -44,22 +70,40 @@ won't do anything real yet.
   Android Studio, run `./gradlew --stop`, delete `app/build` + `build` +
   `.gradle` folders, reopen Studio for a clean sync. Nothing in `app/build`
   or `.gradle` is source code — always safe to delete.
+- Project is now a real git repo, pushed to
+  [github.com/tal20100/AdKan-Android](https://github.com/tal20100/AdKan-Android),
+  default branch `main`.
 
-## 4. Known gaps in the current visual/functional pass (not blocking, just honest status)
+## 5. Known gaps (honest current status)
 
-- **All 5 tabs now have real screens** — Home, Friends, Groups (with podium),
-  Blocking/Focus, and Settings. Bottom tab bar matches iOS exactly (same 5
-  tabs, same Hebrew labels, same order).
-- **All data everywhere is sample/fake data** — today's minutes, streak,
-  leaderboard members, group list, friends list. Nothing is wired to real
-  `UsageStatsManager` or Supabase yet. Toggles on the Blocking screen are
-  local `remember`d state only — flipping them does nothing real.
-- The today/week toggle on Groups and the "הפעל פוקוס" button on Home are
-  intentionally non-functional (no-op), matching the screenshots' locked/
-  static treatment — not bugs, just not wired up yet.
+- **All 5 tabs have real screens** — Home, Friends, Groups (with podium),
+  Blocking/Focus, Settings. Bottom tab bar matches iOS (same 5 tabs, same
+  Hebrew labels, same order, real vector icons — not emoji anymore).
+- **Real screen-time data on Home** — today/yesterday minutes come from a real
+  `UsageStatsManager` query once you've granted Usage Access; falls back to
+  sample numbers before that.
+- **Real app-blocking enforcement now exists** — an Accessibility Service
+  detects when a selected app opens and shows a full-screen "עד כאן" block
+  screen, based on real per-app usage minutes and your toggle settings.
+  **This is the one thing that genuinely needs your phone to verify** — see
+  `docs/BLOCKING_ENFORCEMENT_TEST_CHECKLIST.md` for the exact test steps and
+  known real-device risks (OEM battery optimization, background-activity-launch
+  restrictions). Nothing about this could be confirmed working without a
+  device — please run through that checklist and report back what happens.
+- **Real app-selection picker** — the "בחירת אפליקציות לחסימה" row shows your
+  actual installed apps, not a hardcoded count.
+- Groups/Friends member lists are still **sample/fake data** — not wired to
+  Supabase yet.
+- The today/week toggle on Groups now shows a real "פרימיום" upsell snackbar
+  when you tap the locked option (previously a silent no-op).
+- The "הפעל פוקוס" button on Home now navigates to the Blocking tab for real.
+- Onboarding's profile (name + avatar) now persists and Settings reads it back.
 - The 3 premium-gated sections on the Blocking screen (hours-based blocking,
-  Hard Mode, shield design) are visual-only locks — no real entitlement check.
-- No unit tests exist yet for this Android project.
+  Hard Mode, shield design) are still visual-only locks — no real entitlement
+  check exists yet.
+- Unit tests exist now (JUnit4) for all pure-logic pieces — none for
+  Compose UI or anything requiring a real Android runtime (that would need
+  Robolectric or a device, deliberately not introduced).
 - Mascot animation curves are approximated (Compose infinite transitions),
   not a pixel-identical port of iOS's SwiftUI spring/easeInOut timing — states,
   thresholds, colors, and art are exact, motion feel is close-but-not-identical.
