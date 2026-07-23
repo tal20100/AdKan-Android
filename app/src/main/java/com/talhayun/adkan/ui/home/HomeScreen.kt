@@ -125,7 +125,7 @@ private fun UsageHeroCard(todayMinutes: Int, yesterdayMinutes: Int, goalMinutes:
                 style = HeroNumber,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
-                overflow = TextOverflow.Clip,
+                overflow = TextOverflow.Ellipsis,
             )
 
             Spacer(Modifier.height(4.dp))
